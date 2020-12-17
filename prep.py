@@ -16,9 +16,9 @@ import sys
 WINDOWS = sys.platform.startswith('win')
 
 if WINDOWS:
-    dask.set_options(get=dask.threaded.get)
+    dask.config.set(get=dask.threaded.get)
 else:
-    dask.set_options(get=dask.multiprocessing.get)
+    dask.config.set(get=dask.multiprocessing.get)
 
 here = os.path.dirname(__file__)
 os.makedirs(os.path.join(here, 'data', 'minute'), exist_ok=True)
@@ -26,6 +26,7 @@ os.makedirs(os.path.join(here, 'data', 'minute'), exist_ok=True)
 stocks = ['afl', 'aig', 'al', 'avy', 'bwa',
           'hal', 'hp', 'hpq', 'ibm', 'jbl', 'jpm', 'luv', 'pcg',
           'usb']
+
 
 def write_stock(symbol):
     dirname = os.path.join(here, 'data', 'minute', symbol)
@@ -39,6 +40,7 @@ def write_stock(symbol):
         df.to_csv(os.path.join(here, 'data', 'minute', symbol, '*.csv'),
                   name_function=names.__getitem__)
         print("Finished CSV: %s" % symbol)
+
 
 for symbol in stocks:
     write_stock(symbol)
