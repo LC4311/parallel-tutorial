@@ -15,10 +15,10 @@ import sys
 
 WINDOWS = sys.platform.startswith('win')
 
-if WINDOWS:
-    dask.config.set(get=dask.threaded.get)
-else:
-    dask.config.set(get=dask.multiprocessing.get)
+# if WINDOWS:
+#     dask.config.set(get=dask.threaded.get)
+# else:
+#     dask.config.set(get=dask.multiprocessing.get)
 
 here = os.path.dirname(__file__)
 os.makedirs(os.path.join(here, 'data', 'minute'), exist_ok=True)
@@ -66,4 +66,10 @@ if not os.path.exists(js):
 
 directories = sorted(glob(os.path.join(here, 'data', 'minute', '*')))
 values = [dask.delayed(convert_to_json)(d) for d in directories]
-dask.compute(values)
+
+if WINDOWS:
+    dask.compute(values, scheduler="threads")
+else:
+    dask.compute(values, scheduler="processes")
+
+# dask.compute(values)
