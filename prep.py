@@ -35,7 +35,7 @@ def write_stock(symbol):
     if not os.path.exists(dirname):
         os.mkdir(dirname)
         df = dd.demo.daily_stock(symbol, today - year, today, freq='30s',
-                                 data_source='google')
+                                 data_source='yahoo')
         names = [str(ts.date()) for ts in df.divisions]
         df.to_csv(os.path.join(here, 'data', 'minute', symbol, '*.csv'),
                   name_function=names.__getitem__)
